@@ -3,6 +3,7 @@ public class Main {
 
     public static void main(String[] args) {
 
+            System.out.println(Task.Status.NEW);
         //Добавляем задачи
 
         Task task1 = new Task("Поседеть от ТЗ 3его спринта", Task.Status.NEW);
@@ -30,13 +31,6 @@ public class Main {
         manager.addNewEpic(epic2);
         manager.addNewSubtask(epic2, subtask2_1);
 
-        //Смена статусов
-        manager.changeStatusSubtask(new Subtask("Понять что она должна передавать объект", Task.Status.IN_PROCESS, epic1.getIdentifier(), 5));
-        manager.changeStatusSubtask(new Subtask("Понять что она должна передавать объект", Task.Status.DONE, epic1.getIdentifier(), 5));
-        manager.changeStatusSubtask(new Subtask("Спасибо, Сергей :)", Task.Status.IN_PROCESS, epic2.getIdentifier(), 10));
-        manager.changeStatusSubtask(new Subtask("Спасибо, Сергей :)", Task.Status.DONE, epic2.getIdentifier(), 10));
-        manager.changeStatusTask(new Task("Расшифровать задуманное задание", Task.Status.IN_PROCESS, 2));
-
         //Получаем все задачи
         System.out.println();
         System.out.println(manager.getAllTasks().toString());
@@ -55,13 +49,15 @@ public class Main {
 
         //Обновление данных
         System.out.println();
-        Task task3 = new Task("Перегрузить конструктор", Task.Status.NEW, 1);
+        Task task3 = new Task("Перегрузить конструктор", Task.Status.IN_PROCESS, 1);
+        Task task31 = new Task("Перегрузить конструктор", Task.Status.DONE, 1);
         Epic epic3 = new Epic("Реализовать метод обновления", Task.Status.NEW, 3, epic1.getSubtasksHashMap());
-        Subtask newSubtask3_1 = new Subtask("Создать объекты", Task.Status.NEW, epic3.getIdentifier(), 4);
+        Subtask newSubtask3_1 = new Subtask("Создать объекты", Task.Status.IN_PROCESS, epic3.getIdentifier(), 4);
         Subtask newSubtask3_2 = new Subtask("Прописать метод", Task.Status.NEW, epic3.getIdentifier(), 5);
         Subtask newSubtask3_3 = new Subtask("Вызвать метод", Task.Status.NEW, epic3.getIdentifier(), 6);
 
         manager.updateTask(task3);
+        manager.updateTask(task31);
         System.out.println(manager.getAllTasks().toString());
 
         manager.updateEpic(epic3);
