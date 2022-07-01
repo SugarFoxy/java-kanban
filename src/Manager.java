@@ -107,12 +107,14 @@ public class Manager {
     public void updateTask(Task task) {
         if (getTaskByIdentifierOrNull(task.getIdentifier()) != null) {
             taskHashMap.put(task.getIdentifier(), task);
+            changeStatusTask(task);
         }
     }
 
     public void updateEpic(Epic epic) {
         if (getEpicByIdentifierOrNull(epic.getIdentifier()) != null) {
             epicHashMap.put(epic.getIdentifier(), epic);
+            setStatusEpic(epic);
         }
     }
 
@@ -120,6 +122,7 @@ public class Manager {
         if (getSubtaskByIdentifierOrNull(subtask.getIdentifier()) != null) {
             HashMap<Integer, Subtask> subtasks = epicHashMap.get(subtask.getIdentifierEpic()).getSubtasksHashMap();
             subtasks.put(subtask.getIdentifier(), subtask);
+            changeStatusSubtask(subtask);
         }
     }
 
@@ -150,7 +153,7 @@ public class Manager {
      * Смена статуса
      */
 
-    public void changeStatusTask(Task task) {
+    private void changeStatusTask(Task task) {
         Task.Status status = getTaskByIdentifierOrNull(task.getIdentifier()).getStatus();
         if (!status.equals(Task.Status.IN_PROCESS)
                 && !status.equals(Task.Status.DONE)
@@ -162,7 +165,7 @@ public class Manager {
         }
     }
 
-    public void changeStatusSubtask(Subtask subtask) {
+    private void changeStatusSubtask(Subtask subtask) {
         Subtask oldSubtask = getSubtaskByIdentifierOrNull(subtask.getIdentifier());
         Task.Status status = oldSubtask.getStatus();
         HashMap<Integer, Subtask> newSubtask = epicHashMap.get(oldSubtask.getIdentifierEpic()).getSubtasksHashMap();
