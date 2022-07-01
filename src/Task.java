@@ -47,10 +47,7 @@ public class Task {
     }
 
     public enum Status{
-        NEW("NEW"),IN_PROCESS("IN_PROCESS"),DONE("DONE");
-
-        Status(String aNew) {
-        }
+        NEW,IN_PROCESS,DONE
     }
 
 
