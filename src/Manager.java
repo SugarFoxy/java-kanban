@@ -140,8 +140,8 @@ public class Manager {
     }
 
     public void deleteSubtaskByIdentifier(int identifier) {
-        int identifierEpic = getAllSubtasks().get(identifier).getIdentifierEpic();
         if (getSubtaskByIdentifierOrNull(identifier) != null) {
+            int identifierEpic = getAllSubtasks().get(identifier).getIdentifierEpic();
             epicHashMap.get(identifierEpic).getSubtasksHashMap().remove(identifier);
         }
     }
