@@ -3,39 +3,44 @@ public class Main {
 
     public static void main(String[] args) {
 
-            System.out.println(Task.Status.NEW);
-        //Добавляем задачи
-
-        Task task1 = new Task("Поседеть от ТЗ 3его спринта", Task.Status.NEW);
-        Task task2 = new Task("Расшифровать задуманное задание", Task.Status.NEW);
-        Epic epic1 = new Epic("Переписать прогу в 4ый раз", Task.Status.NEW);
-        Subtask subtask3_1 = new Subtask("Удалить уже готовый консольный шедевр", Task.Status.NEW, epic1.getIdentifier());
-        Subtask subtask3_2 = new Subtask("Понять что она должна передавать объект", Task.Status.NEW, epic1.getIdentifier());
-        Subtask subtask3_3 = new Subtask("Проломить все стены своей головой", Task.Status.NEW, epic1.getIdentifier());
-        Subtask subtask3_4 = new Subtask("Написать очередной шедевр", Task.Status.NEW, epic1.getIdentifier());
-        Subtask subtask3_5 = new Subtask("Сдать на ревью", Task.Status.NEW, epic1.getIdentifier());
-        Epic epic2 = new Epic("Поблагодарить Сергея за прекрасное ревью", Task.Status.NEW);
-        Subtask subtask2_1 = new Subtask("Спасибо, Сергей :)", Task.Status.NEW, epic2.getIdentifier());
-
         //Отправляем в хранилище
         Manager manager = new Manager();
+        Task task1 = new Task("Ужаснуться","Поседеть от ТЗ 3его спринта");
+        Task task2 = new Task("Расшифровка","Расшифровать задуманное задание");
 
         manager.addNewTask(task1);
         manager.addNewTask(task2);
+
+        Epic epic1 = new Epic("Сделать Финальный проект","Переписать прогу в 4ый раз");
+
         manager.addNewEpic(epic1);
-        manager.addNewSubtask(epic1, subtask3_1);
-        manager.addNewSubtask(epic1, subtask3_2);
-        manager.addNewSubtask(epic1, subtask3_3);
-        manager.addNewSubtask(epic1, subtask3_4);
-        manager.addNewSubtask(epic1, subtask3_5);
+
+        Subtask subtask3_1 = new Subtask("Удалить", "Удалить уже готовый консольный шедевр",epic1.getIdentifier());
+        Subtask subtask3_2 = new Subtask("Осознать суть","Понять что она должна передавать объект", epic1.getIdentifier());
+        Subtask subtask3_3 = new Subtask("Устранить трудности","Проломить все стены своей головой", epic1.getIdentifier());
+        Subtask subtask3_4 = new Subtask("Закончить","Написать очередной шедевр", epic1.getIdentifier());
+        Subtask subtask3_5 = new Subtask("Ревью","Сдать на ревью", epic1.getIdentifier());
+
+        manager.addNewSubtask( subtask3_1);
+        manager.addNewSubtask( subtask3_2);
+        manager.addNewSubtask( subtask3_3);
+        manager.addNewSubtask( subtask3_4);
+        manager.addNewSubtask( subtask3_5);
+
+        Epic epic2 = new Epic("Благодарность","Поблагодарить Сергея за прекрасное ревью");
+
         manager.addNewEpic(epic2);
-        manager.addNewSubtask(epic2, subtask2_1);
+
+        Subtask subtask9_1 = new Subtask(":)", "Спасибо, Сергей :)", epic2.getIdentifier());
+
+        manager.addNewSubtask( subtask9_1);
 
         //Получаем все задачи
         System.out.println();
-        System.out.println(manager.getAllTasks().toString());
-        System.out.println(manager.getAllEpics().toString());
-        System.out.println(manager.getAllSubtasks().toString());
+        PrintListValue.printTasks(manager.getListTasks());
+        PrintListValue.printEpic(manager.getListEpic());
+        PrintListValue.printSubtask(manager.getListSubtasks());
+
 
         //Получаем задачу по индексу
         System.out.println();
@@ -45,42 +50,53 @@ public class Main {
 
         //Получение списка всех подзадач определённого эпика.
         System.out.println();
-        System.out.println(manager.getListSubtaskFromEpic(epic1).toString());
+        PrintListValue.printListSubtaskFromEpic(manager.getListSubtaskFromEpic(epic1.identifier));
 
         //Обновление данных
         System.out.println();
-        Task task3 = new Task("Перегрузить конструктор", Task.Status.IN_PROCESS, 1);
-        Task task31 = new Task("Перегрузить конструктор", Task.Status.DONE, 1);
-        Epic epic3 = new Epic("Реализовать метод обновления", Task.Status.NEW, 3, epic1.getSubtasksHashMap());
-        Subtask newSubtask3_1 = new Subtask("Создать объекты", Task.Status.IN_PROCESS, epic3.getIdentifier(), 4);
-        Subtask newSubtask3_2 = new Subtask("Прописать метод", Task.Status.NEW, epic3.getIdentifier(), 5);
-        Subtask newSubtask3_3 = new Subtask("Вызвать метод", Task.Status.NEW, epic3.getIdentifier(), 6);
 
-        manager.updateTask(task3);
-        manager.updateTask(task31);
-        System.out.println(manager.getAllTasks().toString());
+        Task task3 = new Task("Утолить любопытство","Сергей, как часто из ваших глаз идет кровь, при проверке моих работ?" );
+        manager.updateTask(task1.identifier,Status.IN_PROCESS,task3);
+        manager.updateTask(task1.identifier,Status.DONE,task3);
+        PrintListValue.printTasks(manager.getListTasks());
 
-        manager.updateEpic(epic3);
-        System.out.println(manager.getAllEpics().toString());
+        Epic epic3 = new Epic("Перезагрузить мозг","Кончилась фантазия" );
+        manager.updateEpic(epic1.identifier, epic3);
 
-        manager.updateSubtask(newSubtask3_1);
-        manager.updateSubtask(newSubtask3_2);
-        manager.updateSubtask(newSubtask3_3);
-        System.out.println(manager.getAllSubtasks().toString());
+
+        Subtask newSubtask3_1 = new Subtask("Уверенность", "На это раз я уверена, что тз выполнено верно", epic1.getIdentifier());
+        Subtask newSubtask3_2 = new Subtask("Усомниться", "Ну почти",epic1.getIdentifier());
+        Subtask newSubtask3_3 = new Subtask("Заслужить похвалу", "Я очень люблю когда меня хвалят:))))",epic1.getIdentifier());
+        manager.updateSubtask(subtask3_1.getIdentifier(),Status.NEW,newSubtask3_1);
+        manager.updateSubtask(subtask3_2.getIdentifier(),Status.NEW,newSubtask3_2);
+        manager.updateSubtask(subtask3_3.getIdentifier(),Status.NEW,newSubtask3_3);
+        manager.updateSubtask(subtask3_2.getIdentifier(),Status.IN_PROCESS,newSubtask3_2);
+
+        Subtask newSubtask9_1 = new Subtask(":)", "Спасибо, Сергей :)", epic2.getIdentifier());
+        manager.updateSubtask(subtask9_1.getIdentifier(),Status.IN_PROCESS,newSubtask9_1);
+        manager.updateSubtask(subtask9_1.getIdentifier(),Status.DONE,newSubtask9_1);
+
+        PrintListValue.printTasks(manager.getListTasks());
+        PrintListValue.printEpic(manager.getListEpic());
+        PrintListValue.printSubtask(manager.getListSubtasks());
 
         //Удаление по индексу
         System.out.println();
 
-        manager.deleteTaskByIdentifier(1);
-        manager.deleteEpicByIdentifier(3);
-        manager.deleteSubtaskByIdentifier(7);
-        manager.deleteSubtaskByIdentifier(8);
+        manager.deleteTaskByIdentifier(task1.identifier);
+        manager.deleteEpicByIdentifier(epic1.identifier);
+        manager.deleteSubtaskByIdentifier(subtask3_5.identifier);
+        manager.deleteSubtaskByIdentifier(subtask3_4.identifier);
 
-        System.out.println(manager.getAllTasks().toString());
-        System.out.println(manager.getAllEpics().toString());
-        System.out.println(manager.getAllSubtasks().toString());
+        PrintListValue.printTasks(manager.getListTasks());
+        PrintListValue.printEpic(manager.getListEpic());
+        PrintListValue.printSubtask(manager.getListSubtasks());
+
 
         //Удаление всех задач
         manager.deleteAllTasks();
+        PrintListValue.printTasks(manager.getListTasks());
+        PrintListValue.printEpic(manager.getListEpic());
+        PrintListValue.printSubtask(manager.getListSubtasks());
     }
 }

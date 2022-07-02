@@ -1,41 +1,33 @@
 
 public class Task {
 
-    private String name;
-    private Status status;
-    private int identifier;
+    protected String name;
+    protected Status status;
+    protected int identifier;
+    protected String description;
 
-    public Task(String name, Status status) {
+    public Task(String name, String description) {
         this.name = name;
-        this.status = status;
-    }
-
-    public Task(String name, Status status, int identifier) {
-        this.name = name;
-        this.status = status;
-        this.identifier = identifier;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
-    public int setIdentifier(int identifier) {
-        this.identifier = identifier;
-        return this.identifier;
-    }
-
-    public String getName() {
-        return name;
+        this.description = description;
+        this.status=Status.NEW;
     }
 
     public Status getStatus() {
         return status;
     }
 
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
     public int getIdentifier() {
         return identifier;
     }
+
+    public void setIdentifier(int identifier) {
+        this.identifier = identifier;
+    }
+
 
     @Override
     public String toString() {
@@ -43,13 +35,8 @@ public class Task {
                 "name='" + name + '\'' +
                 ", status=" + status +
                 ", identifier=" + identifier +
+                ", description='" + description + '\'' +
                 '}';
     }
-
-    public enum Status{
-        NEW,IN_PROCESS,DONE
-    }
-
-
 }
 
