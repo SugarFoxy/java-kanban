@@ -1,7 +1,12 @@
+package servise;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+
+import status.Status;
+import tasks.*;
 
 public class Manager {
     private int identifier = 0;

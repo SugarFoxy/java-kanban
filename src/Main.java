@@ -1,3 +1,7 @@
+import servise.*;
+import status.Status;
+import tasks.*;
+
 public class Main {
 
 
@@ -50,18 +54,18 @@ public class Main {
 
         //Получение списка всех подзадач определённого эпика.
         System.out.println();
-        PrintListValue.printListSubtaskFromEpic(manager.getListSubtaskFromEpic(epic1.identifier));
+        PrintListValue.printListSubtaskFromEpic(manager.getListSubtaskFromEpic(epic1.getIdentifier()));
 
         //Обновление данных
         System.out.println();
 
         Task task3 = new Task("Утолить любопытство","Сергей, как часто из ваших глаз идет кровь, при проверке моих работ?" );
-        manager.updateTask(task1.identifier,Status.IN_PROCESS,task3);
-        manager.updateTask(task1.identifier,Status.DONE,task3);
+        manager.updateTask(task1.getIdentifier(), Status.IN_PROCESS,task3);
+        manager.updateTask(task1.getIdentifier(),Status.DONE,task3);
         PrintListValue.printTasks(manager.getListTasks());
 
         Epic epic3 = new Epic("Перезагрузить мозг","Кончилась фантазия" );
-        manager.updateEpic(epic1.identifier, epic3);
+        manager.updateEpic(epic1.getIdentifier(), epic3);
 
 
         Subtask newSubtask3_1 = new Subtask("Уверенность", "На это раз я уверена, что тз выполнено верно", epic1.getIdentifier());
@@ -83,10 +87,10 @@ public class Main {
         //Удаление по индексу
         System.out.println();
 
-        manager.deleteTaskByIdentifier(task1.identifier);
-        manager.deleteEpicByIdentifier(epic1.identifier);
-        manager.deleteSubtaskByIdentifier(subtask3_5.identifier);
-        manager.deleteSubtaskByIdentifier(subtask3_4.identifier);
+        manager.deleteTaskByIdentifier(task1.getIdentifier());
+        manager.deleteEpicByIdentifier(epic1.getIdentifier());
+        manager.deleteSubtaskByIdentifier(subtask3_5.getIdentifier());
+        manager.deleteSubtaskByIdentifier(subtask3_4.getIdentifier());
 
         PrintListValue.printTasks(manager.getListTasks());
         PrintListValue.printEpic(manager.getListEpic());
