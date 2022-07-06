@@ -1,37 +1,36 @@
 package tasks;
 
 
-import status.Status;
+import java.util.Objects;
 
-public class Task {
-
-    protected String name;
-    protected Status status;
-    protected int identifier;
-    protected String description;
-
+public class Task extends MasterTasks {
     public Task(String name, String description) {
-        this.name = name;
-        this.description = description;
-        this.status=Status.NEW;
+        super(name, description);
     }
 
-    public Status getStatus() {
+    public Task(String name, Epic.Status status, int identifier, String description) {
+        super(name, status, identifier, description);
+    }
+    @Override
+    public Epic.Status getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Task that = (Task) o;
+        return identifier == that.identifier
+                && name.equals(that.name)
+                && status == that.status
+                && description.equals(that.description);
     }
 
-    public int getIdentifier() {
-        return identifier;
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, status, identifier, description);
     }
-
-    public void setIdentifier(int identifier) {
-        this.identifier = identifier;
-    }
-
 
     @Override
     public String toString() {
@@ -43,4 +42,3 @@ public class Task {
                 '}';
     }
 }
-

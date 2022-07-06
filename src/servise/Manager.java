@@ -5,14 +5,13 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
-import status.Status;
 import tasks.*;
 
 public class Manager {
     private int identifier = 0;
-    private HashMap<Integer, Task> taskHashMap = new HashMap<>();
-    private HashMap<Integer, Epic> epicHashMap = new HashMap<>();
-    private HashMap<Integer, Subtask> subtaskHashMap = new HashMap<>();
+    private HashMap<Integer, Task> tasks = new HashMap<>();
+    private HashMap<Integer, Epic> epics = new HashMap<>();
+    private HashMap<Integer, Subtask> subtasks = new HashMap<>();
 
     /**
      * Создание задач
@@ -20,25 +19,26 @@ public class Manager {
 
     public void addNewTask(Task task) {
         task.setIdentifier(++identifier);
-        taskHashMap.put(task.getIdentifier(), task);
+        tasks.put(task.getIdentifier(), task);
     }
 
     public void addNewEpic(Epic epic) {
         epic.setIdentifier(++identifier);
-        epicHashMap.put(epic.getIdentifier(), epic);
+        epics.put(epic.getIdentifier(), epic);
     }
 
 
     public void addNewSubtask(Subtask subtask) {
         int epicId = subtask.getIdentifierEpic();
-        Epic epic = epicHashMap.get(epicId);
+        Epic epic = epics.get(epicId);
         if (epic == null) {
             return;
         }
         int subtaskId = ++identifier;
         subtask.setIdentifier(subtaskId);
-        subtaskHashMap.put(subtaskId, subtask);
-        epic.putSubtasks(subtaskId);
+        subtasks.put(subtaskId, subtask);
+        epic.addSubtasks(subtask);
+        epic.recountEpicStatus();
     }
 
     /**
@@ -46,17 +46,17 @@ public class Manager {
      */
 
     public List<Task> getListTasks() {
-        Collection<Task> values = taskHashMap.values();
+        Collection<Task> values = tasks.values();
         return new ArrayList<>(values);
     }
 
     public List<Epic> getListEpic() {
-        Collection<Epic> values = epicHashMap.values();
+        Collection<Epic> values = epics.values();
         return new ArrayList<>(values);
     }
 
     public List<Subtask> getListSubtasks() {
-        Collection<Subtask> values = subtaskHashMap.values();
+        Collection<Subtask> values = subtasks.values();
         return new ArrayList<>(values);
     }
 
@@ -65,11 +65,21 @@ public class Manager {
      */
 
     public void deleteAllTasks() {
-        if (taskHashMap.size() != 0 || epicHashMap.size() != 0 || subtaskHashMap.size() != 0) {
-            taskHashMap.clear();
-            epicHashMap.clear();
-            subtaskHashMap.clear();
-            identifier = 0;
+        if (tasks.size() != 0) {
+            tasks.clear();
+        }
+    }
+
+    public void deleteAllEpics() {
+        if (epics.size() != 0) {
+            epics.clear();
+            subtasks.clear();
+        }
+    }
+
+    public void deleteAllSubtasks() {
+        if (subtasks.size() != 0) {
+            subtasks.clear();
         }
     }
 
@@ -77,25 +87,16 @@ public class Manager {
      * Получение по идентификатору
      */
 
-    public Task getTaskByIdentifierOrNull(int identifier) {
-        if (taskHashMap.containsKey(identifier)) {
-            return taskHashMap.get(identifier);
-        }
-        return null;
+    public Task getTaskByIdentifier(int identifier) {
+        return tasks.get(identifier);
     }
 
-    public Epic getEpicByIdentifierOrNull(int identifier) {
-        if (epicHashMap.containsKey(identifier)) {
-            return epicHashMap.get(identifier);
-        }
-        return null;
+    public Epic getEpicByIdentifier(int identifier) {
+        return epics.get(identifier);
     }
 
-    public Subtask getSubtaskByIdentifierOrNull(int identifier) {
-        if (subtaskHashMap.containsKey(identifier)) {
-            return subtaskHashMap.get(identifier);
-        }
-        return null;
+    public Subtask getSubtaskByIdentifier(int identifier) {
+        return subtasks.get(identifier);
     }
 
 
@@ -105,8 +106,8 @@ public class Manager {
 
     public List<Subtask> getListSubtaskFromEpic(int epicId) {
         ArrayList<Subtask> subtasks = new ArrayList<>();
-        for (Integer subtaskId : epicHashMap.get(epicId).getSubtasksId()) {
-            subtasks.add(subtaskHashMap.get(subtaskId));
+        for (Subtask subtask : epics.get(epicId).getSubtasks()) {
+            subtasks.add(this.subtasks.get(subtask.getIdentifier()));
         }
         return subtasks;
     }
@@ -115,36 +116,24 @@ public class Manager {
      * Обновление данных
      */
 
-    public void updateTask(int taskId, Status status, Task task) {
-        if (getTaskByIdentifierOrNull(taskId) != null ) {
-            task.setStatus(taskHashMap.get(taskId).getStatus());
-            Status oldStatus = task.getStatus();
-            if (!status.equals(Status.NEW)) {
-                changeStatusTask(taskId, status, task);
-            } else if (oldStatus.equals(Status.NEW) && status.equals(Status.NEW)) {
-                taskHashMap.put(taskId, task);
-            }
+    public void updateTask(Task task) {
+        if (getTaskByIdentifier(task.getIdentifier()) != null ) {
+            tasks.put(task.getIdentifier(), task);
         }
     }
 
-    public void updateEpic(int epicId, Epic epic) {
-        if (getEpicByIdentifierOrNull(epicId) != null) {
-            epic.setStatus(epicHashMap.get(epicId).getStatus());
-            epic.setSubtasksId(epicHashMap.get(epicId).getSubtasksId());
-            epicHashMap.put(epicId, epic);
+    public void updateEpic(Epic epic) {
+        if (getEpicByIdentifier(epic.getIdentifier()) != null) {
+            epic.setSubtasks(epics.get(epic.getIdentifier()).getSubtasks());
+            epics.put(epic.getIdentifier(), epic);
+            epic.recountEpicStatus();
         }
     }
 
-    public void updateSubtask(int subtaskId, Status status, Subtask subtask) {
-        if (getSubtaskByIdentifierOrNull(subtaskId) != null) {
-            subtask.setStatus(subtaskHashMap.get(subtaskId).getStatus());
-            Status oldStatus = subtask.getStatus();
-            subtaskHashMap.put(subtaskId, subtask);
-            if (!status.equals(Status.NEW)) {
-                changeStatusSubtask(subtaskId, status, subtask);
-            } else if (oldStatus.equals(Status.NEW) && status.equals(Status.NEW)) {
-                subtaskHashMap.put(subtaskId, subtask);
-            }
+    public void updateSubtask(Subtask subtask) {
+        if (getSubtaskByIdentifier(subtask.getIdentifier()) != null) {
+            subtasks.put(subtask.getIdentifier(), subtask);
+            epics.get(subtask.getIdentifierEpic()).recountEpicStatus();
         }
     }
 
@@ -153,85 +142,28 @@ public class Manager {
      */
 
     public void deleteTaskByIdentifier(int identifier) {
-        if (getTaskByIdentifierOrNull(identifier) != null) {
-            taskHashMap.remove(identifier);
+        if (getTaskByIdentifier(identifier) != null) {
+            tasks.remove(identifier);
         }
     }
 
     public void deleteEpicByIdentifier(int identifier) {
-        if (getEpicByIdentifierOrNull(identifier) != null) {
-            for (Integer idSubtask:epicHashMap.get(identifier).getSubtasksId()){
-                subtaskHashMap.remove(idSubtask);
+        if (getEpicByIdentifier(identifier) != null) {
+            for (Subtask subtask: epics.get(identifier).getSubtasks()){
+                subtasks.remove(subtask.getIdentifier());
             }
-            epicHashMap.remove(identifier);
+            epics.get(identifier).deleteSubtasks();
+            epics.remove(identifier);
         }
     }
 
     public void deleteSubtaskByIdentifier(int identifier) {
-        if (getSubtaskByIdentifierOrNull(identifier) != null) {
-            subtaskHashMap.remove(identifier);
+        if (getSubtaskByIdentifier(identifier) != null
+                && getEpicByIdentifier(subtasks.get(identifier).getIdentifierEpic()) != null) {
+            int epicId = subtasks.get(identifier).getIdentifierEpic();
+            subtasks.remove(identifier);
+            epics.get(epicId).recountEpicStatus();
         }
-    }
-
-    /**
-     * Смена статуса
-     */
-
-    private void changeStatusTask(int taskId, Status newStatus, Task task) {
-        Status statusOld = task.getStatus();
-        if (!statusOld.equals(Status.IN_PROCESS)
-                && !statusOld.equals(Status.DONE)
-                && newStatus.equals(Status.IN_PROCESS)) {
-            setTaskStatus(taskId, newStatus, task);
-        } else if (!statusOld.equals(Status.DONE)
-                && statusOld.equals(Status.IN_PROCESS)
-                && newStatus.equals(Status.DONE)) {
-            setTaskStatus(taskId, newStatus, task);
-        }
-    }
-
-    private void changeStatusSubtask(int subtaskId, Status newStatus, Subtask subtask) {
-        Status statusOld = subtask.getStatus();
-        if (!statusOld.equals(Status.IN_PROCESS)
-                && !statusOld.equals(Status.DONE)
-                && newStatus.equals(Status.IN_PROCESS)) {
-            setSubtaskStatus(subtaskId, newStatus, subtask);
-        } else if (!statusOld.equals(Status.DONE)
-                && statusOld.equals(Status.IN_PROCESS)
-                && newStatus.equals(Status.DONE)) {
-            setSubtaskStatus(subtaskId, newStatus, subtask);
-        }
-    }
-
-    private void setStatusEpic(int epicId) {
-        int sumTrueElement = 0;
-        Epic epic =epicHashMap.get(epicId);
-        List<Subtask> subtasks = getListSubtaskFromEpic(epicId);
-        for (Subtask subtask : subtasks) {
-            if (subtask.getStatus().equals(Status.IN_PROCESS)) {
-                if (epic.getStatus().equals(Status.NEW) ) {
-                    epic.setStatus(Status.IN_PROCESS);
-                    break;
-                }
-            } else if (subtask.getStatus().equals(Status.DONE)) {
-                sumTrueElement++;
-                if (sumTrueElement == subtasks.size()
-                        && epic.getStatus().equals(Status.IN_PROCESS)) {
-                    epic.setStatus(Status.DONE);
-                }
-            }
-        }
-    }
-
-    private void setSubtaskStatus(int subtaskId, Status newStatus, Subtask subtask) {
-        subtaskHashMap.put(subtaskId, subtask);
-        subtaskHashMap.get(subtaskId).setStatus(newStatus);
-        setStatusEpic(subtask.getIdentifierEpic());
-    }
-
-    private void setTaskStatus(int taskId, Status newStatus, Task task) {
-        taskHashMap.put(taskId, task);
-        taskHashMap.get(taskId).setStatus(newStatus);
     }
 }
 
