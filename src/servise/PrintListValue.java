@@ -27,8 +27,10 @@ public class PrintListValue {
     }
 
     public  static  void  printListSubtaskFromEpic(List<Subtask> subtasks){
-        for (Subtask subtask : subtasks){
-            System.out.println(subtask);
+        if (subtasks != null) {
+            for (Subtask subtask : subtasks) {
+                System.out.println(subtask);
+            }
         }
     }
 }

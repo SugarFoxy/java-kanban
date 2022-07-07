@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 
-public class Epic extends MasterTasks {
+public class Epic extends Task {
     private ArrayList<Subtask> subtasks =new ArrayList<>();
 
     public Epic(String name, String description) {
@@ -32,7 +32,7 @@ public class Epic extends MasterTasks {
         subtasks.clear();
     }
 
-    public void recountEpicStatus(){
+    public void updateStatus(){
         int sumSubtaskNew =0;
         int sumSubtaskDone =0;
         for(Subtask subtask: subtasks) {
@@ -51,9 +51,11 @@ public class Epic extends MasterTasks {
         }
     }
 
-    @Override
-    public Status getStatus(){
-        return null;
+    public void deleteSubtask(Subtask subtask){
+        if (subtasks.contains(subtask)){
+            subtasks.remove(subtask);
+            updateStatus();
+        }
     }
 
     @Override
@@ -79,9 +81,5 @@ public class Epic extends MasterTasks {
                 ", identifier=" + identifier +
                 ", description='" + description + '\'' +
                 '}';
-    }
-
-    public enum Status {
-        NEW,IN_PROCESS,DONE
     }
 }

@@ -3,7 +3,7 @@ package tasks;
 
 import java.util.Objects;
 
-public class Subtask extends MasterTasks {
+public class Subtask extends Task {
     private int identifierEpic;
 
     public Subtask(String name, String description, int identifierEpic) {
@@ -11,18 +11,17 @@ public class Subtask extends MasterTasks {
         this.identifierEpic = identifierEpic;
     }
 
-    public Subtask(String name, Epic.Status status, int identifier, String description, int identifierEpic) {
+    public Subtask(String name, Status status, int identifier, String description, int identifierEpic) {
         super(name, status, identifier, description);
+        this.identifierEpic = identifierEpic;
+    }
+
+    public void setIdentifierEpic(int identifierEpic) {
         this.identifierEpic = identifierEpic;
     }
 
     public int getIdentifierEpic() {
         return identifierEpic;
-    }
-
-    @Override
-    public Epic.Status getStatus() {
-        return status;
     }
 
     @Override

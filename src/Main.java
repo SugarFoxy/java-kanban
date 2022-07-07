@@ -53,31 +53,31 @@ public class Main {
 
         //Получение списка всех подзадач определённого эпика.
         System.out.println();
-        PrintListValue.printListSubtaskFromEpic(manager.getListSubtaskFromEpic(epic1.getIdentifier()));
+        PrintListValue.printListSubtaskFromEpic(manager.getListSubtaskFromEpic(1));
 
         //Обновление данных
         System.out.println();
 
-        Task task3 = new Task("Утолить любопытство", Epic.Status.NEW, task1.getIdentifier(), "Сергей, как часто из ваших глаз идет кровь, при проверке моих работ?" );
-        manager.updateTask( new Task("Утолить любопытство", Epic.Status.IN_PROCESS, task3.getIdentifier(), "Сергей, как часто из ваших глаз идет кровь, при проверке моих работ?" ));
-        manager.updateTask(new Task("Утолить любопытство", Epic.Status.DONE, task3.getIdentifier(), "Сергей, как часто из ваших глаз идет кровь, при проверке моих работ?" ));
+        Task task3 = new Task("Утолить любопытство", Status.NEW, task1.getIdentifier(), "Сергей, как часто из ваших глаз идет кровь, при проверке моих работ?" );
+        manager.updateTask( new Task("Утолить любопытство", Status.IN_PROCESS, task3.getIdentifier(), "Сергей, как часто из ваших глаз идет кровь, при проверке моих работ?" ));
+        manager.updateTask(new Task("Утолить любопытство", Status.DONE, task3.getIdentifier(), "Сергей, как часто из ваших глаз идет кровь, при проверке моих работ?" ));
         PrintListValue.printTasks(manager.getListTasks());
 
         Epic epic3 = new Epic("Перезагрузить мозг", epic1.getIdentifier(), "Кончилась фантазия" );
         manager.updateEpic(epic3);
 
 
-        Subtask newSubtask3_1 = new Subtask("Уверенность", Epic.Status.NEW, subtask3_1.getIdentifier(), "На это раз я уверена, что тз выполнено верно", epic1.getIdentifier());
-        Subtask newSubtask3_2 = new Subtask("Усомниться", Epic.Status.NEW, subtask3_2.getIdentifier(), "Ну почти",epic1.getIdentifier());
-        Subtask newSubtask3_3 = new Subtask("Заслужить похвалу", Epic.Status.NEW, subtask3_3.getIdentifier(), "Я очень люблю когда меня хвалят:))))",epic1.getIdentifier());
+        Subtask newSubtask3_1 = new Subtask("Уверенность", Status.NEW, subtask3_1.getIdentifier(), "На это раз я уверена, что тз выполнено верно", epic1.getIdentifier());
+        Subtask newSubtask3_2 = new Subtask("Усомниться", Status.NEW, subtask3_2.getIdentifier(), "Ну почти",epic1.getIdentifier());
+        Subtask newSubtask3_3 = new Subtask("Заслужить похвалу", Status.NEW, subtask3_3.getIdentifier(), "Я очень люблю когда меня хвалят:))))",epic1.getIdentifier());
         manager.updateSubtask(newSubtask3_1);
         manager.updateSubtask(newSubtask3_2);
         manager.updateSubtask(newSubtask3_3);
-        manager.updateSubtask(new Subtask("Усомниться", Epic.Status.DONE, subtask3_2.getIdentifier(), "Ну почти",epic1.getIdentifier()));
+        manager.updateSubtask(new Subtask("Усомниться", Status.DONE, subtask3_2.getIdentifier(), "Ну почти",epic1.getIdentifier()));
 
-        Subtask newSubtask9_1 = new Subtask(":)", Epic.Status.NEW, subtask9_1.getIdentifier(),"Спасибо, Сергей :)", epic2.getIdentifier());
+        Subtask newSubtask9_1 = new Subtask(":)", Status.NEW, subtask9_1.getIdentifier(),"Спасибо, Сергей :)", epic2.getIdentifier());
         manager.updateSubtask(newSubtask9_1);
-        manager.updateSubtask(new Subtask(":)", Epic.Status.DONE, subtask9_1.getIdentifier(),"Спасибо, Сергей :)", epic2.getIdentifier()));
+        manager.updateSubtask(new Subtask(":)", Status.DONE, subtask9_1.getIdentifier(),"Спасибо, Сергей :)", epic2.getIdentifier()));
 
         PrintListValue.printTasks(manager.getListTasks());
         PrintListValue.printEpic(manager.getListEpic());
