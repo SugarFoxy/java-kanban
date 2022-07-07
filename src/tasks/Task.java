@@ -61,6 +61,14 @@ public class Task {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Task task = (Task) o;
+        return identifier == task.identifier && name.equals(task.name) && status == task.status && description.equals(task.description);
+    }
+
+    @Override
     public int hashCode() {
         return Objects.hash(name, status, identifier, description);
     }
