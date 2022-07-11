@@ -1,18 +1,24 @@
 package tasks;
 
 
+import servise.InMemoryTaskManager;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
-public class Task {
+public class Task{
     protected String name;
     protected Status status;
-    protected int identifier;
+    protected int identifier = 0;
     protected String description;
 
     public Task(String name, String description) {
         this.name = name;
         this.description = description;
         this.status= Status.NEW;
+        ++identifier;
     }
 
     public Task(String name, Status status, int identifier, String description) {
@@ -60,6 +66,9 @@ public class Task {
         this.description = description;
     }
 
+
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -82,4 +91,5 @@ public class Task {
                 ", description='" + description + '\'' +
                 '}';
     }
+
 }

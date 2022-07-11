@@ -1,6 +1,9 @@
 package tasks;
 
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 public class Subtask extends Task {
@@ -16,12 +19,12 @@ public class Subtask extends Task {
         this.identifierEpic = identifierEpic;
     }
 
-    public void setIdentifierEpic(int identifierEpic) {
-        this.identifierEpic = identifierEpic;
-    }
-
     public int getIdentifierEpic() {
         return identifierEpic;
+    }
+
+    public void setIdentifierEpic(int identifierEpic) {
+        this.identifierEpic = identifierEpic;
     }
 
     @Override
@@ -49,3 +52,4 @@ public class Subtask extends Task {
                 '}';
     }
 }
+
