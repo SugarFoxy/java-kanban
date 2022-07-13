@@ -4,14 +4,13 @@ import servise.interfase.HistoryManager;
 import servise.interfase.TaskManager;
 
 public class Managers {
-    private static InMemoryHistoryManager inMemoryHistoryManager = new InMemoryHistoryManager();
-    private static InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
+
 
     public static TaskManager getDefault() {
-        return inMemoryTaskManager;
+        return new InMemoryTaskManager();
     }
 
     public static HistoryManager getDefaultHistory() {
-        return inMemoryHistoryManager;
+        return new InMemoryHistoryManager();
     }
 }

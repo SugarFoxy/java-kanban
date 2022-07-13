@@ -9,13 +9,9 @@ import java.util.HashMap;
 import java.util.List;
 
 public interface TaskManager {
-
-//    HashMap<Integer, Task> tasks = new HashMap<>();
-//    HashMap<Integer, Epic> epics = new HashMap<>();
-//    HashMap<Integer, Subtask> subtasks = new HashMap<>();
-
-
-
+/**
+   * РЎРѕР·РґР°РЅРёРµ Р·Р°РґР°С‡
+*/
     void addNewTask(Task task);
 
     void addNewEpic(Epic epic);
@@ -23,7 +19,7 @@ public interface TaskManager {
     void addNewSubtask(Subtask subtask);
 
     /**
-     * Вывод всех задач
+     * Р’С‹РІРѕРґ РІСЃРµС… Р·Р°РґР°С‡
      */
 
     List<Task> getListTasks();
@@ -33,7 +29,7 @@ public interface TaskManager {
     List<Subtask> getListSubtasks();
 
     /**
-     * Удаление всех задач
+     * РЈРґР°Р»РµРЅРёРµ РІСЃРµС… Р·Р°РґР°С‡
      */
 
     void deleteAllTasks();
@@ -43,23 +39,13 @@ public interface TaskManager {
     void deleteAllSubtasks();
 
     /**
-     * Получение по идентификатору
-     */
-
-    Task getTaskByIdentifier(int identifier);
-
-    Epic getEpicByIdentifier(int identifier);
-
-    Subtask getSubtaskByIdentifier(int identifier);
-
-    /**
-     * Получение списка всех подзадач эпика
+     * РџРѕР»СѓС‡РµРЅРёРµ СЃРїРёСЃРєР° РІСЃРµС… РїРѕРґР·Р°РґР°С‡ СЌРїРёРєР°
      */
 
     List<Subtask> getListSubtaskFromEpic(int epicId);
 
     /**
-     * Обновление данных
+     * РћР±РЅРѕРІР»РµРЅРёРµ РґР°РЅРЅС‹С…
      */
 
     void updateTask(Task task);
@@ -69,7 +55,7 @@ public interface TaskManager {
     void updateSubtask(Subtask subtask);
 
     /**
-     * Удаление по идентификатору
+     * РЈРґР°Р»РµРЅРёРµ РїРѕ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂСѓ
      */
 
     void deleteTaskByIdentifier(int identifier);
@@ -79,7 +65,7 @@ public interface TaskManager {
     void deleteSubtaskByIdentifier(int identifier);
 
     /**
-     * Получение задачи
+     * РџСЂРѕСЃРјРѕС‚СЂ Р·Р°РґР°С‡Рё
      */
     Task getTask(int id);
 
@@ -87,5 +73,7 @@ public interface TaskManager {
 
     Subtask getSubtask(int id);
 
+    List<Task> getHistory();
 }
+
 
