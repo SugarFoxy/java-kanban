@@ -102,26 +102,26 @@ public class Main {
         PrintListValue.printSubtask(Managers.getDefault().getListSubtasks());
         PrintListValue.printTasks(Managers.getDefault().getListTasks());
         PrintListValue.printEpic(Managers.getDefault().getListEpic());
-//        PrintListValue.printSubtask(Managers.getDefault().getListSubtasks());
+        PrintListValue.printSubtask(Managers.getDefault().getListSubtasks());
 
         Managers.getDefaultHistory().getHistory();
-//        //Удаление по индексу
-//        System.out.println();
-//
-//        Managers.getDefault().deleteTaskByIdentifier(task1.getIdentifier());
-//        Managers.getDefault().deleteEpicByIdentifier(epic1.getIdentifier());
-//        Managers.getDefault().deleteSubtaskByIdentifier(subtask3_5.getIdentifier());
-//        Managers.getDefault().deleteSubtaskByIdentifier(subtask3_4.getIdentifier());
-//
-//        PrintListValue.printTasks(Managers.getDefault().getListTasks());
-//        PrintListValue.printEpic(Managers.getDefault().getListEpic());
-//        PrintListValue.printSubtask(Managers.getDefault().getListSubtasks());
-//
-//
-//        //Удаление всех задач
-//        manager.deleteAllTasks();
-//        PrintListValue.printTasks(Managers.getDefault().getListTasks());
-//        PrintListValue.printEpic(Managers.getDefault().getListEpic());
-//        PrintListValue.printSubtask(Managers.getDefault().getListSubtasks());
+        //Удаление по индексу
+        System.out.println();
+
+        Managers.getDefault().deleteTaskByIdentifier(task1.getIdentifier());
+        Managers.getDefault().deleteEpicByIdentifier(epic1.getIdentifier());
+        Managers.getDefault().deleteSubtaskByIdentifier(subtask3_5.getIdentifier());
+        Managers.getDefault().deleteSubtaskByIdentifier(subtask3_4.getIdentifier());
+
+        PrintListValue.printTasks(Managers.getDefault().getListTasks());
+        PrintListValue.printEpic(Managers.getDefault().getListEpic());
+        PrintListValue.printSubtask(Managers.getDefault().getListSubtasks());
+
+
+        //Удаление всех задач
+        Managers.getDefault().deleteAllSubtasks();
+        PrintListValue.printTasks(Managers.getDefault().getListTasks());
+        PrintListValue.printEpic(Managers.getDefault().getListEpic());
+        PrintListValue.printSubtask(Managers.getDefault().getListSubtasks());
     }
 }

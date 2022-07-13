@@ -16,7 +16,7 @@ public interface TaskManager {
 
 
 
-    void addNewTask(Task task); //{
+    void addNewTask(Task task);
 
     void addNewEpic(Epic epic);
 

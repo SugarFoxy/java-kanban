@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public  class InMemoryHistoryManager implements HistoryManager {
+
+
     @Override
     public void addHistory(Task task){
         browsingHistory.add(0,task);

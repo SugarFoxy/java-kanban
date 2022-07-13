@@ -17,7 +17,6 @@ public class InMemoryTaskManager implements TaskManager {
     private HashMap<Integer, Epic> epics = new HashMap<>();
     private HashMap<Integer, Subtask> subtasks = new HashMap<>();
 //    List<Task> browsingHistory = new ArrayList<>();
-InMemoryHistoryManager historyManager= new InMemoryHistoryManager();
 
     private int getId() {
         return ++identifier;
@@ -81,14 +80,14 @@ InMemoryHistoryManager historyManager= new InMemoryHistoryManager();
 
     @Override
     public void deleteAllTasks() {
-        if (tasks.size() != 0) {
+        if (tasks.isEmpty()) {
             tasks.clear();
         }
     }
 
     @Override
     public void deleteAllEpics() {
-        if (epics.size() != 0) {
+        if (epics.isEmpty()) {
             epics.clear();
             subtasks.clear();
         }
@@ -97,13 +96,18 @@ InMemoryHistoryManager historyManager= new InMemoryHistoryManager();
     @Override
     public void deleteAllSubtasks() {
         if (!subtasks.isEmpty()) {
+            List<Integer> epicsId = new ArrayList<>();
             int epicId = 0;
             for (Subtask subtask : subtasks.values()) {
                 if (epicId != subtask.getIdentifierEpic()) {
                     epicId = subtask.getIdentifierEpic();
-                    subtasks.clear();
-                    epics.get(epicId).updateStatus();
+                    epicsId.add(epicId);
                 }
+            }
+            subtasks.clear();
+            for (Integer id: epicsId) {
+                epics.get(id).getSubtasks().clear();
+                epics.get(id).updateStatus();
             }
         }
     }
@@ -220,7 +224,7 @@ InMemoryHistoryManager historyManager= new InMemoryHistoryManager();
     @Override
     public Task getTask(int id) {
         if (tasks.containsKey(id)) {
-            historyManager.addHistory(tasks.get(id));
+            Managers.getDefaultHistory().addHistory(tasks.get(id));
             deleteExtraElement();
             return tasks.get(id);
         }
@@ -230,7 +234,7 @@ InMemoryHistoryManager historyManager= new InMemoryHistoryManager();
     @Override
     public Epic getEpic(int id) {
         if (epics.containsKey(id)) {
-            historyManager.addHistory(epics.get(id));
+            Managers.getDefaultHistory().addHistory(epics.get(id));
             deleteExtraElement();
             return epics.get(id);
         }
@@ -240,15 +244,16 @@ InMemoryHistoryManager historyManager= new InMemoryHistoryManager();
     @Override
     public Subtask getSubtask(int id) {
         if (subtasks.containsKey(id)) {
-            historyManager.addHistory(subtasks.get(id));
+            Managers.getDefaultHistory().addHistory(subtasks.get(id));
             deleteExtraElement();
             return subtasks.get(id);
         }
         return null;
     }
     private void deleteExtraElement(){
-        if(historyManager.browsingHistory.size() > historyManager.AMOUNT_OF_ELEMENTS_IN_HISTORY){
-            historyManager.browsingHistory.remove(historyManager.AMOUNT_OF_ELEMENTS_IN_HISTORY);
+        List<Task> browsingHistory = Managers.getDefaultHistory().browsingHistory;
+        if(browsingHistory.size() > Managers.getDefaultHistory().AMOUNT_OF_ELEMENTS_IN_HISTORY){
+            browsingHistory.remove(Managers.getDefaultHistory().AMOUNT_OF_ELEMENTS_IN_HISTORY);
         }
     }
 
