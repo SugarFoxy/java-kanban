@@ -9,13 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 
 public interface TaskManager {
-
-//    HashMap<Integer, Task> tasks = new HashMap<>();
-//    HashMap<Integer, Epic> epics = new HashMap<>();
-//    HashMap<Integer, Subtask> subtasks = new HashMap<>();
-
-
-
     void addNewTask(Task task); //{
 
     void addNewEpic(Epic epic);
@@ -23,7 +16,7 @@ public interface TaskManager {
     void addNewSubtask(Subtask subtask);
 
     /**
-     * Вывод всех задач
+     * пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
      */
 
     List<Task> getListTasks();
@@ -33,7 +26,7 @@ public interface TaskManager {
     List<Subtask> getListSubtasks();
 
     /**
-     * Удаление всех задач
+     * пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
      */
 
     void deleteAllTasks();
@@ -43,23 +36,13 @@ public interface TaskManager {
     void deleteAllSubtasks();
 
     /**
-     * Получение по идентификатору
-     */
-
-    Task getTaskByIdentifier(int identifier);
-
-    Epic getEpicByIdentifier(int identifier);
-
-    Subtask getSubtaskByIdentifier(int identifier);
-
-    /**
-     * Получение списка всех подзадач эпика
+     * пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
      */
 
     List<Subtask> getListSubtaskFromEpic(int epicId);
 
     /**
-     * Обновление данных
+     * пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
      */
 
     void updateTask(Task task);
@@ -69,7 +52,7 @@ public interface TaskManager {
     void updateSubtask(Subtask subtask);
 
     /**
-     * Удаление по идентификатору
+     * пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
      */
 
     void deleteTaskByIdentifier(int identifier);
@@ -79,7 +62,7 @@ public interface TaskManager {
     void deleteSubtaskByIdentifier(int identifier);
 
     /**
-     * Получение задачи
+     * пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
      */
     Task getTask(int id);
 
@@ -87,5 +70,7 @@ public interface TaskManager {
 
     Subtask getSubtask(int id);
 
+    List<Task> getHistory();
 }
+
 
