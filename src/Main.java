@@ -46,9 +46,9 @@ public class Main {
 
         //Получаем задачу по индексу
         System.out.println();
-        System.out.println(Managers.getDefault().getTaskByIdentifier(1));
-        System.out.println(Managers.getDefault().getEpicByIdentifier(3));
-        System.out.println(Managers.getDefault().getSubtaskByIdentifier(4));
+        System.out.println(Managers.getDefault().getTask(1));
+        System.out.println(Managers.getDefault().getEpic(3));
+        System.out.println(Managers.getDefault().getSubtask(4));
 
         System.out.println();
         PrintListValue.printRequestTask(Managers.getDefault().getTask(1));
@@ -123,5 +123,5 @@ public class Main {
         PrintListValue.printTasks(Managers.getDefault().getListTasks());
         PrintListValue.printEpic(Managers.getDefault().getListEpic());
         PrintListValue.printSubtask(Managers.getDefault().getListSubtasks());
-    }
+   }
 }
