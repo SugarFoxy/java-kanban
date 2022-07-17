@@ -1,14 +1,9 @@
 package tasks;
 
 
-import servise.InMemoryTaskManager;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
 
-public class Task{
+public class Task {
     protected String name;
     protected Status status;
     protected int identifier = 0;
@@ -17,8 +12,7 @@ public class Task{
     public Task(String name, String description) {
         this.name = name;
         this.description = description;
-        this.status= Status.NEW;
-        ++identifier;
+        this.status = Status.NEW;
     }
 
     public Task(String name, Status status, int identifier, String description) {
@@ -28,7 +22,7 @@ public class Task{
         this.description = description;
     }
 
-    public Task (String name, int identifier, String description) {
+    public Task(String name, int identifier, String description) {
         this.name = name;
         this.identifier = identifier;
         this.description = description;
@@ -65,8 +59,6 @@ public class Task{
     public void setDescription(String description) {
         this.description = description;
     }
-
-
 
 
     @Override

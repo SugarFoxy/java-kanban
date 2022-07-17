@@ -4,14 +4,12 @@ import tasks.Epic;
 import tasks.Subtask;
 import tasks.Task;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public interface TaskManager {
-/**
-   * Создание задач
-*/
+    /**
+     * Создание задач
+     */
     void addNewTask(Task task);
 
     void addNewEpic(Epic epic);

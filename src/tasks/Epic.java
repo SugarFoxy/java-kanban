@@ -1,13 +1,11 @@
 package tasks;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
 
 
 public class Epic extends Task {
-    private ArrayList<Subtask> subtasks =new ArrayList<>();
+    private ArrayList<Subtask> subtasks = new ArrayList<>();
 
     public Epic(String name, String description) {
         super(name, description);
@@ -21,8 +19,8 @@ public class Epic extends Task {
         return subtasks;
     }
 
-    public void setSubtasks(ArrayList<Subtask> subtasks){
-        this.subtasks=subtasks;
+    public void setSubtasks(ArrayList<Subtask> subtasks) {
+        this.subtasks = subtasks;
     }
 
 
@@ -30,31 +28,31 @@ public class Epic extends Task {
         subtasks.add(subtask);
     }
 
-    public void deleteSubtasks(){
+    public void deleteSubtasks() {
         subtasks.clear();
     }
 
-    public void updateStatus(){
-        int sumSubtaskNew =0;
-        int sumSubtaskDone =0;
-        for(Subtask subtask: subtasks) {
+    public void updateStatus() {
+        int sumSubtaskNew = 0;
+        int sumSubtaskDone = 0;
+        for (Subtask subtask : subtasks) {
             if (subtask.getStatus().equals(Status.NEW)) {
                 ++sumSubtaskNew;
-            }else if(subtask.getStatus().equals(Status.DONE)){
+            } else if (subtask.getStatus().equals(Status.DONE)) {
                 ++sumSubtaskDone;
             }
         }
-        if (subtasks.size() == 0 || subtasks.size() == sumSubtaskNew){
+        if (subtasks.size() == 0 || subtasks.size() == sumSubtaskNew) {
             setStatus(Status.NEW);
         } else if (subtasks.size() == sumSubtaskDone) {
             setStatus(Status.DONE);
-        }else {
+        } else {
             setStatus(Status.IN_PROCESS);
         }
     }
 
-    public void deleteSubtask(Subtask subtask){
-        if (subtasks.contains(subtask)){
+    public void deleteSubtask(Subtask subtask) {
+        if (subtasks.contains(subtask)) {
             subtasks.remove(subtask);
             updateStatus();
         }

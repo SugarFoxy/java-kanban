@@ -1,5 +1,6 @@
 package servise;
 
+import servise.interfase.HistoryManager;
 import servise.interfase.TaskManager;
 import tasks.Epic;
 import tasks.Status;
@@ -16,6 +17,7 @@ public class InMemoryTaskManager implements TaskManager {
     private HashMap<Integer, Epic> epics = new HashMap<>();
     private HashMap<Integer, Subtask> subtasks = new HashMap<>();
     private int identifier = 0;
+    private HistoryManager history = Managers.getDefaultHistory();
 
     private int getId() {
         return ++identifier;
@@ -230,10 +232,8 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public List<Task> getHistory() {
-        return Managers.getDefaultHistory().getHistory();
+        return history.getHistory();
     }
-
-
 }
 
 
