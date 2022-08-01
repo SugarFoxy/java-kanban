@@ -1,31 +1,85 @@
 package servise;
 
 import servise.interfase.HistoryManager;
+import tasks.Epic;
+import tasks.Subtask;
 import tasks.Task;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
-public  class InMemoryHistoryManager implements HistoryManager {
+public class InMemoryHistoryManager implements HistoryManager {
+    private Map<Integer, Node<Task>> browsingHistory = new HashMap<>();
+    private Node<Task> first;
+    private Node<Task> last;
 
-    private LinkedList<Task> browsingHistory = new LinkedList<>();
-
-    @Override
-    public void addHistory(Task task){
-        browsingHistory.addFirst(task);
-        int amountElements =10;
-        if(browsingHistory.size() > amountElements){
-            browsingHistory.removeLast();
+    private void linkLast(Task t) {
+        final Node<Task> l = last;
+        final Node<Task> newNode = new Node<>(l, t, null);
+        last = newNode;
+        if (l == null) {
+            first = newNode;
+        } else {
+            l.next = newNode;
         }
     }
 
-    @Override
-    public List<Task> getHistory() {
-        if(!browsingHistory.isEmpty()){
-            return new ArrayList<>(browsingHistory);
+    private void removeNode(Node<Task> node) {
+        if (node != null) {
+            if (node.prev != null) {
+                node.prev.next = node.next;
+            } else {
+                node.next.prev = null;
+                first = node.next;
+            }
+            if (node.next != null) {
+                node.next.prev = node.prev;
+            } else {
+                node.prev.next = null;
+                last = node.prev;
+            }
         }
-        return null;
+    }
+
+    private ArrayList<Task> getTasks() {
+        ArrayList<Task> tasks = new ArrayList<>();
+        Node<Task> node = first;
+        while (node != null) {
+            tasks.add(node.data);
+            node = node.next;
+        }
+        return tasks;
+    }
+
+    @Override
+    public void addHistory(Task task) {
+        remove(task.getIdentifier());
+        linkLast(task);
+        browsingHistory.put(task.getIdentifier(), last);
+    }
+
+    @Override
+    public void remove(int id) {
+        removeNode(browsingHistory.get(id));
+    }
+
+    @Override
+    public ArrayList<Task> getHistory() {
+        return new ArrayList<>(getTasks());
+    }
+
+    private static class Node<T extends Task> {
+
+        public T data;
+        public Node<T> next;
+        public Node<T> prev;
+
+        public Node(Node<T> prev, T element, Node<T> next) {
+            this.data = element;
+            this.next = next;
+            this.prev = prev;
+        }
     }
 }
+
