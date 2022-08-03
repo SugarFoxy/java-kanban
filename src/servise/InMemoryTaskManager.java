@@ -13,11 +13,11 @@ import java.util.HashMap;
 import java.util.List;
 
 public class InMemoryTaskManager implements TaskManager {
-    private HashMap<Integer, Task> tasks = new HashMap<>();
-    private HashMap<Integer, Epic> epics = new HashMap<>();
-    private HashMap<Integer, Subtask> subtasks = new HashMap<>();
+    private final HashMap<Integer, Task> tasks = new HashMap<>();
+    private final HashMap<Integer, Epic> epics = new HashMap<>();
+    private final HashMap<Integer, Subtask> subtasks = new HashMap<>();
     private int identifier = 0;
-    private HistoryManager history = Managers.getDefaultHistory();
+    private final HistoryManager history = Managers.getDefaultHistory();
 
     private int getId() {
         return ++identifier;
@@ -81,14 +81,14 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void deleteAllTasks() {
-        if (tasks.isEmpty()) {
+        if (!tasks.isEmpty()) {
             tasks.clear();
         }
     }
 
     @Override
     public void deleteAllEpics() {
-        if (epics.isEmpty()) {
+        if (!epics.isEmpty()) {
             epics.clear();
             subtasks.clear();
         }
@@ -174,7 +174,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void deleteTaskByIdentifier(int identifier) {
         if (tasks.containsKey(identifier)) {
-            Managers.getDefaultHistory().remove(identifier);
+            history.remove(identifier);
             tasks.remove(identifier);
         }
     }
@@ -183,11 +183,11 @@ public class InMemoryTaskManager implements TaskManager {
     public void deleteEpicByIdentifier(int identifier) {
         if (epics.containsKey(identifier)) {
             for (Subtask subtask : epics.get(identifier).getSubtasks()) {
-                Managers.getDefaultHistory().remove(subtask.getIdentifier());
+                history.remove(subtask.getIdentifier());
                 subtasks.remove(subtask.getIdentifier());
             }
             epics.get(identifier).deleteSubtasks();
-            Managers.getDefaultHistory().remove(identifier);
+            history.remove(identifier);
             epics.remove(identifier);
         }
     }
@@ -198,7 +198,7 @@ public class InMemoryTaskManager implements TaskManager {
                 && epics.containsKey(subtasks.get(identifier).getIdentifierEpic())) {
             int epicId = subtasks.get(identifier).getIdentifierEpic();
             epics.get(epicId).deleteSubtask(subtasks.get(identifier));
-            Managers.getDefaultHistory().remove(identifier);
+            history.remove(identifier);
             subtasks.remove(identifier);
         }
     }
@@ -209,7 +209,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Task getTask(int id) {
         if (tasks.containsKey(id)) {
-            Managers.getDefaultHistory().addHistory(tasks.get(id));
+            history.addHistory(tasks.get(id));
             return tasks.get(id);
         }
         return null;
@@ -218,7 +218,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Epic getEpic(int id) {
         if (epics.containsKey(id)) {
-            Managers.getDefaultHistory().addHistory(epics.get(id));
+            history.addHistory(epics.get(id));
             return epics.get(id);
         }
         return null;
@@ -227,7 +227,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Subtask getSubtask(int id) {
         if (subtasks.containsKey(id)) {
-            Managers.getDefaultHistory().addHistory(subtasks.get(id));
+            history.addHistory(subtasks.get(id));
             return subtasks.get(id);
         }
         return null;
@@ -236,7 +236,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public List<Task> getHistory() {
-        return Managers.getDefaultHistory().getHistory();
+        return history.getHistory();
     }
 }
 
