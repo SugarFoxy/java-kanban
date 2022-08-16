@@ -1,54 +1,59 @@
 import servise.*;
 import tasks.*;
 
+import java.io.File;
+
 public class Main {
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ManagerSaveException {
 
-        //Отправляем в хранилище
-        Task task1 = new Task("Ужаснуться","Поседеть от ТЗ 3его спринта");
-        Task task2 = new Task("Расшифровка","Расшифровать задуманное задание");
-
-        Managers.getDefault().addNewTask(task1);
-        Managers.getDefault().addNewTask(task2);
-
-        Epic epic1 = new Epic("Сделать Финальный проект","Переписать прогу в 4ый раз");
-
-        Managers.getDefault().addNewEpic(epic1);
-
-        Subtask subtask3_1 = new Subtask("Удалить", "Удалить уже готовый консольный шедевр",epic1.getIdentifier());
-        Subtask subtask3_2 = new Subtask("Осознать суть","Понять что она должна передавать объект", epic1.getIdentifier());
-        Subtask subtask3_3 = new Subtask("Превозмочь","Проломить все стены своей головой", epic1.getIdentifier());
-        Subtask subtask3_4 = new Subtask("Закончить","Написать очередной шедевр", epic1.getIdentifier());
-        Subtask subtask3_5 = new Subtask("Ревью","Сдать на ревью", epic1.getIdentifier());
-
-        Managers.getDefault().addNewSubtask( subtask3_1);
-        Managers.getDefault().addNewSubtask( subtask3_2);
-        Managers.getDefault().addNewSubtask( subtask3_3);
-        Managers.getDefault().addNewSubtask( subtask3_4);
-        Managers.getDefault().addNewSubtask( subtask3_5);
-
-        Epic epic2 = new Epic("Благодарность","Поблагодарить Сергея за прекрасное ревью");
-
-        Managers.getDefault().addNewEpic(epic2);
-        Managers.getDefault().getTask(task1.getIdentifier());
-        Managers.getDefault().getTask(task2.getIdentifier());
-        Managers.getDefault().getEpic(epic1.getIdentifier());
-        Managers.getDefault().getEpic(epic2.getIdentifier());
-        Managers.getDefault().getSubtask(subtask3_1.getIdentifier());
-        Managers.getDefault().getSubtask(subtask3_2.getIdentifier());
-        Managers.getDefault().getSubtask(subtask3_3.getIdentifier());
-
-        PrintListValue.printHistory(Managers.getDefault().getHistory());
-        System.out.println("-----------------------");
-        Managers.getDefault().getTask(task1.getIdentifier());
-        Managers.getDefault().getTask(task2.getIdentifier());
-        Managers.getDefault().getEpic(epic1.getIdentifier());
-        Managers.getDefault().getEpic(epic2.getIdentifier());
-
-        PrintListValue.printHistory(Managers.getDefault().getHistory());
-        System.out.println("-----------------------");
+//        FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager( new File("Tasks.csv"));
+//
+//
+//        //Отправляем в хранилище
+//        Task task1 = new Task("Ужаснуться","Поседеть от ТЗ третьего спринта");
+//        Task task2 = new Task("Расшифровка","Расшифровать задуманное задание");
+//
+//       fileBackedTasksManager.addNewTask(task1);
+//        fileBackedTasksManager.addNewTask(task2);
+//
+//        Epic epic1 = new Epic("Сделать Финальный проект","Переписать прогу в 4ый раз");
+//
+//        fileBackedTasksManager.addNewEpic(epic1);
+//
+//        Subtask subtask3_1 = new Subtask("Удалить", "Удалить уже готовый консольный шедевр",epic1.getIdentifier());
+//        Subtask subtask3_2 = new Subtask("Осознать суть","Понять что она должна передавать объект", epic1.getIdentifier());
+//        Subtask subtask3_3 = new Subtask("Превозмочь","Проломить все стены своей головой", epic1.getIdentifier());
+//        Subtask subtask3_4 = new Subtask("Закончить","Написать очередной шедевр", epic1.getIdentifier());
+//        Subtask subtask3_5 = new Subtask("Ревью","Сдать на ревью", epic1.getIdentifier());
+//
+//        fileBackedTasksManager.addNewSubtask( subtask3_1);
+//        fileBackedTasksManager.addNewSubtask( subtask3_2);
+//        fileBackedTasksManager.addNewSubtask( subtask3_3);
+//        fileBackedTasksManager.addNewSubtask( subtask3_4);
+//        fileBackedTasksManager.addNewSubtask( subtask3_5);
+//
+//        Epic epic2 = new Epic("Благодарность","Поблагодарить Сергея за прекрасное ревью");
+//
+//        fileBackedTasksManager.addNewEpic(epic2);
+//        Managers.getDefault().getTask(task1.getIdentifier());
+//        Managers.getDefault().getTask(task2.getIdentifier());
+//        Managers.getDefault().getEpic(epic1.getIdentifier());
+//        Managers.getDefault().getEpic(epic2.getIdentifier());
+//        Managers.getDefault().getSubtask(subtask3_1.getIdentifier());
+//        Managers.getDefault().getSubtask(subtask3_2.getIdentifier());
+//        Managers.getDefault().getSubtask(subtask3_3.getIdentifier());
+//
+//        PrintListValue.printHistory(Managers.getDefault().getHistory());
+//        System.out.println("-----------------------");
+//        Managers.getDefault().getTask(task1.getIdentifier());
+//        Managers.getDefault().getTask(task2.getIdentifier());
+//        Managers.getDefault().getEpic(epic1.getIdentifier());
+//        Managers.getDefault().getEpic(epic2.getIdentifier());
+//
+//        PrintListValue.printHistory(Managers.getDefault().getHistory());
+//        System.out.println("-----------------------");
 //        Subtask subtask9_1 = new Subtask(":)", "Спасибо, Сергей :)", epic2.getIdentifier());
 //
 //        Managers.getDefault().addNewSubtask( subtask9_1);
@@ -124,14 +129,14 @@ public class Main {
 //        //Удаление по индексу
 //        System.out.println();
 //
-        Managers.getDefault().deleteTaskByIdentifier(task1.getIdentifier());
-        Managers.getDefault().deleteSubtaskByIdentifier(subtask3_5.getIdentifier());
-        Managers.getDefault().deleteSubtaskByIdentifier(subtask3_4.getIdentifier());
-        PrintListValue.printHistory(Managers.getDefault().getHistory());
-        System.out.println("-----------------------");
-        Managers.getDefault().deleteEpicByIdentifier(epic1.getIdentifier());
-        PrintListValue.printHistory(Managers.getDefault().getHistory());
-        System.out.println("-----------------------");
+//        Managers.getDefault().deleteTaskByIdentifier(task1.getIdentifier());
+//        Managers.getDefault().deleteSubtaskByIdentifier(subtask3_5.getIdentifier());
+//        Managers.getDefault().deleteSubtaskByIdentifier(subtask3_4.getIdentifier());
+//        PrintListValue.printHistory(Managers.getDefault().getHistory());
+//        System.out.println("-----------------------");
+//        Managers.getDefault().deleteEpicByIdentifier(epic1.getIdentifier());
+//        PrintListValue.printHistory(Managers.getDefault().getHistory());
+//        System.out.println("-----------------------");
 //
 //        PrintListValue.printTasks(Managers.getDefault().getListTasks());
 //        PrintListValue.printEpic(Managers.getDefault().getListEpic());

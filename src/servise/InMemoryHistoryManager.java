@@ -1,8 +1,6 @@
 package servise;
 
 import servise.interfase.HistoryManager;
-import tasks.Epic;
-import tasks.Subtask;
 import tasks.Task;
 
 import java.util.ArrayList;
@@ -27,17 +25,22 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     private void removeNode(Node<Task> node) {
         if (node != null) {
-            if (node.prev != null) {
-                node.prev.next = node.next;
+            if (node.prev == null && node.next == null) {
+                first = null;
+                last = null;
             } else {
-                node.next.prev = null;
-                first = node.next;
-            }
-            if (node.next != null) {
-                node.next.prev = node.prev;
-            } else {
-                node.prev.next = null;
-                last = node.prev;
+                if (node.prev != null) {
+                    node.prev.next = node.next;
+                } else {
+                    node.next.prev = null;
+                    first = node.next;
+                }
+                if (node.next != null) {
+                    node.next.prev = node.prev;
+                } else {
+                    node.prev.next = null;
+                    last = node.prev;
+                }
             }
         }
     }
@@ -54,7 +57,7 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public void addHistory(Task task) {
-        if(task != null) {
+        if (task != null) {
             remove(task.getIdentifier());
             linkLast(task);
             browsingHistory.put(task.getIdentifier(), last);
@@ -64,6 +67,7 @@ public class InMemoryHistoryManager implements HistoryManager {
     @Override
     public void remove(int id) {
         removeNode(browsingHistory.get(id));
+        browsingHistory.remove(id);
     }
 
     @Override

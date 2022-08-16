@@ -27,7 +27,6 @@ public class Task {
         this.identifier = identifier;
         this.description = description;
     }
-
     public String getName() {
         return name;
     }

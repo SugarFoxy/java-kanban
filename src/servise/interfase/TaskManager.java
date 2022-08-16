@@ -1,5 +1,6 @@
 package servise.interfase;
 
+import servise.ManagerSaveException;
 import tasks.Epic;
 import tasks.Subtask;
 import tasks.Task;
@@ -10,11 +11,11 @@ public interface TaskManager {
     /**
      * Создание задач
      */
-    void addNewTask(Task task);
+    void addNewTask(Task task) ;
 
-    void addNewEpic(Epic epic);
+    void addNewEpic(Epic epic) ;
 
-    void addNewSubtask(Subtask subtask);
+    void addNewSubtask(Subtask subtask) ;
 
     /**
      * Вывод всех задач

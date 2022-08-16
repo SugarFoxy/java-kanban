@@ -14,7 +14,9 @@ public class Epic extends Task {
     public Epic(String name, int identifier, String description) {
         super(name, identifier, description);
     }
-
+    public Epic(String name, Status status, int identifier, String description) {
+        super(name, status, identifier, description);
+    }
     public ArrayList<Subtask> getSubtasks() {
         return subtasks;
     }
@@ -50,6 +52,8 @@ public class Epic extends Task {
             setStatus(Status.IN_PROCESS);
         }
     }
+
+
 
     public void deleteSubtask(Subtask subtask) {
         if (subtasks.contains(subtask)) {
