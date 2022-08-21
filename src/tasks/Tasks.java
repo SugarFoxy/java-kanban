@@ -1,4 +1,4 @@
-package servise;
+package tasks;
 
 public enum Tasks {
     TASK("TASK"),

@@ -2,10 +2,7 @@ package servise;
 
 import servise.interfase.HistoryManager;
 import servise.interfase.TaskManager;
-import tasks.Epic;
-import tasks.Status;
-import tasks.Subtask;
-import tasks.Task;
+import tasks.*;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -63,14 +60,16 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
     }
 
     public static FileBackedTasksManager loadFromFile(File file) {
-        FileBackedTasksManager manager = new FileBackedTasksManager(file);
         try {
-            String fileContents = Files.readString(Path.of(file.getName()), StandardCharsets.UTF_8);
-            String[] line = fileContents.split("\n");
-            if (!line[0].equals("")) {
-                manager.readTasks(line, manager);
-                boolean isEmptiness = line[line.length - 1].equals("Пусто");
-                manager.readHistory(isEmptiness, line, manager);
+            FileBackedTasksManager manager = new FileBackedTasksManager(file);
+            if(file.exists()) {
+                String fileContents = Files.readString(Path.of(file.getName()), StandardCharsets.UTF_8);
+                String[] line = fileContents.split("\n");
+                if (!line[0].equals("")) {
+                    manager.readTasks(line, manager);
+                    boolean isEmptiness = line[line.length - 1].equals("Пусто");
+                    manager.readHistory(isEmptiness, line);
+                }
             }
             return manager;
         } catch (IOException e) {
@@ -111,25 +110,31 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         for (int i = 1; i < (line.length - 2); i++) {
             Task task = manager.fromString(line[i]);
             if (task instanceof Epic) {
-                manager.addNewEpic((Epic) task);
+                identifier = task.getIdentifier();
+                epics.put(identifier,(Epic) task);
             } else if (task instanceof Subtask) {
-                manager.addNewSubtask((Subtask) task);
+                identifier = task.getIdentifier();
+                subtasks.put(identifier,(Subtask) task);
             } else {
-                manager.addNewTask(task);
+                identifier = task.getIdentifier();
+                tasks.put(identifier,task);
             }
         }
     }
 
-    private void readHistory(boolean isEmptiness, String[] line, FileBackedTasksManager manager) {
+    private void readHistory(boolean isEmptiness, String[] line) {
         if (!isEmptiness) {
             for (Integer id : historyFromString(line[line.length - 1])) {
-                manager.getTask(id);
-                manager.getEpic(id);
-                manager.getSubtask(id);
+                if (epics.containsKey(id)) {
+                    history.addHistory(epics.get(id));
+                } else if (subtasks.containsKey(id)) {
+                    history.addHistory(subtasks.get(id));
+                } else if (tasks.containsKey(id)) {
+                    history.addHistory(tasks.get(id));
+                }
             }
         }
     }
-
     private String[] createArrayRecord(Task task) {
         String[] taskData = new String[6];
         taskData[0] = Integer.toString(task.getIdentifier());
@@ -151,7 +156,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         return String.join(",", record);
     }
 
-    public void save() throws ManagerSaveException {
+    public void save(){
         try (Writer writer = new FileWriter("Tasks.csv", StandardCharsets.UTF_8)) {
             writer.write("id,type,name,status,description,epic\n");
             for (Task task : getAllTasks()) {
