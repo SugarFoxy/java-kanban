@@ -7,7 +7,7 @@ import tasks.Task;
 
 import java.util.List;
 
-public interface TaskManager {
+public interface TaskManager{
     /**
      * Создание задач
      */
@@ -73,6 +73,8 @@ public interface TaskManager {
     Subtask getSubtask(int id);
 
     List<Task> getHistory();
+
+    List<Task>getPrioritizedTasks();
 }
 
 

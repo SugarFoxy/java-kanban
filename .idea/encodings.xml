@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
-    <file url="file://$PROJECT_DIR$/src/Main.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/servise/FileBackedTasksManager.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/servise/InMemoryTaskManager.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/servise/PrintListValue.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/Main.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/servise/FileBackedTasksManager.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/servise/InMemoryTaskManager.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/servise/PrintListValue.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/test/java/FileBackedTasksManager.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/test/java/ManagersTests/FileBackedTasksManagerTest.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/test/java/ManagersTests/HistoryManagerTest.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/test/java/ManagersTests/InMemoryTaskManagerTest.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/test/java/ManagersTests/TaskManagerTest.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/test/java/TasksTests/EpicTest.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/test/java/TasksTests/SubtaskTest.java" charset="UTF-8" />
   </component>
 </project>

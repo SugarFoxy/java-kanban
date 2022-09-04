@@ -34,8 +34,14 @@ public class PrintListValue {
                 System.out.println(subtask);
             }
         }
+    }
 
-
+        public static void printSortTask(List<Task> tasks) {
+            if (tasks != null) {
+                for (Task task : tasks) {
+                    System.out.println(task);
+                }
+            }
     }
 
     public static void printRequestTask(Task task) {
@@ -71,4 +77,6 @@ public class PrintListValue {
             }
         }
     }
+
+
 }
