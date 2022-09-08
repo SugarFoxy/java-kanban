@@ -29,8 +29,8 @@ public class SubtaskTest extends TaskAbstactTest{
     @Test
     public void getEndTimeTest(){
        assertAll(
-               () -> assertEquals(LocalDateTime.parse("01:25 01.01.2015", DateTimeFormatter.ofPattern("HH:mm dd.MM.yyyy")),task1.getEndTime(),"по времени какая-то ху*ня(не забыть стереть)"),
-               () -> assertNotEquals(LocalDateTime.parse("01:24 01.01.2015", DateTimeFormatter.ofPattern("HH:mm dd.MM.yyyy")),task1.getEndTime(),"по времени какая-то ху*ня(не забыть стереть)")
+               () -> assertEquals(LocalDateTime.parse("01:25 01.01.2015", DateTimeFormatter.ofPattern("HH:mm dd.MM.yyyy")),task1.getEndTime(),"Конечное время не верно"),
+               () -> assertNotEquals(LocalDateTime.parse("01:24 01.01.2015", DateTimeFormatter.ofPattern("HH:mm dd.MM.yyyy")),task1.getEndTime(),"Конечное время не верно")
        );
     }
 

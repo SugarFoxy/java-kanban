@@ -30,27 +30,22 @@ class EpicTest extends TaskAbstactTest {
     @DisplayName("Расчет статуса")
     public void updateStatusTest() {
         Epic emptyEpic = new Epic("a", NEW, 1, "b");
-        emptyEpic.updateStatus();
 
         Epic epicAllSubtaskNew = new Epic("a", NEW, 1, "b");
         epicAllSubtaskNew.addSubtasks(new Subtask("a", NEW, 2, "b", 1, 25, "01:00 01.01.2015"));
         epicAllSubtaskNew.addSubtasks(new Subtask("a", NEW, 3, "b", 1, 25, "02:00 01.01.2015"));
-        epicAllSubtaskNew.updateStatus();
 
         Epic epicAllSubtaskDone = new Epic("a", NEW, 1, "b");
         epicAllSubtaskDone.addSubtasks(new Subtask("a", DONE, 2, "b", 1, 25, "01:00 01.01.2015"));
         epicAllSubtaskDone.addSubtasks(new Subtask("a", DONE, 3, "b", 1, 25, "02:00 01.01.2015"));
-        epicAllSubtaskDone.updateStatus();
 
         Epic epicSubtaskDoneAndNew = new Epic("a", NEW, 1, "b");
         epicSubtaskDoneAndNew.addSubtasks(new Subtask("a", DONE, 2, "b", 1, 25, "01:00 01.01.2015"));
         epicSubtaskDoneAndNew.addSubtasks(new Subtask("a", NEW, 3, "b", 1, 25, "02:00 01.01.2015"));
-        epicSubtaskDoneAndNew.updateStatus();
 
         Epic epicAllSubtasksInProcess = new Epic("a", NEW, 1, "b");
         epicAllSubtasksInProcess.addSubtasks(new Subtask("a", IN_PROCESS, 2, "b", 1, 25, "01:00 01.01.2015"));
         epicAllSubtasksInProcess.addSubtasks(new Subtask("a", IN_PROCESS, 3, "b", 1, 25, "02:00 01.01.2015"));
-        epicAllSubtasksInProcess.updateStatus();
 
         assertAll(
                 () -> assertEquals(NEW, emptyEpic.getStatus(), "Неправильный статус(сабтаски: не заполнены)"),
@@ -103,7 +98,6 @@ class EpicTest extends TaskAbstactTest {
         Epic epic = new Epic("a", NEW, 1, "b");
         epic.addSubtasks(new Subtask("a", NEW, 2, "b", 1, 25, "01:00 01.01.2015"));
         epic.addSubtasks(new Subtask("a", NEW, 3, "b", 1, 25, "02:00 01.01.2015"));
-        epic.updateTime();
         LocalDateTime end = LocalDateTime.parse("02:25 01.01.2015",DATE_TIME_FORMATTER);
         assertEquals(end,epic.getEndTime(),"Неправильная обработка времени окончания");
     }
@@ -117,7 +111,6 @@ class EpicTest extends TaskAbstactTest {
         Epic epicFull = new Epic("a", NEW, 1, "b");
         epicFull.addSubtasks(new Subtask("a", NEW, 2, "b", 1, 25, "01:00 01.01.2015"));
         epicFull.addSubtasks(new Subtask("a", NEW, 3, "b", 1, 25, "02:00 01.01.2015"));
-        epicFull.updateTime();
         LocalDateTime epicFullStart = LocalDateTime.parse("01:00 01.01.2015",DATE_TIME_FORMATTER);
 
         assertAll(

@@ -126,8 +126,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
                     dataTask[7]);
             Epic epic = epics.get(epicId);
             epic.addSubtasks(subtask);
-            epic.updateStatus();
-            epic.updateTime();
             return subtask;
         }
 

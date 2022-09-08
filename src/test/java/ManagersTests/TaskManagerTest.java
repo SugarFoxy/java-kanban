@@ -57,8 +57,11 @@ abstract class TaskManagerTest<T extends TaskManager> {
                 () -> assertEquals(1, tasks.size(), "Неверное количество задач."),
                 () -> assertEquals(task, tasks.get(0), "Задачи не совпадают.")
         );
-        Task task1 = new Task("Test addNewTask", NEW, 2, "Test addNewTask description", 25, "00:00 01.01.1001");
+        Task task1 = new Task("Test addNewTask", NEW, 2, "Test addNewTask description", 25, "00:10 01.01.1001");
         taskManager.addNewTask(task1);
+        taskManager.addNewTask(new Task("Test addNewTask", NEW, 2, "Test addNewTask description", 25, "00:00 01.01.1001"));
+        taskManager.addNewTask(new Task("Test addNewTask", NEW, 2, "Test addNewTask description", 25, "23:55 31.12.1000"));
+        taskManager.addNewTask(new Task("Test addNewTask", NEW, 2, "Test addNewTask description", 5, "00:05 01.01.1001"));
         final List<Task> tasks1 = taskManager.getListTasks();
         assertAll(
                 () -> assertEquals(1, tasks1.size(), "Пересечение не должно быть записано")

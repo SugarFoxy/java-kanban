@@ -8,6 +8,7 @@ import java.util.Objects;
 
 public class Epic extends Task {
     private ArrayList<Subtask> subtasks = new ArrayList<>();
+    private LocalDateTime endTime;
     public Epic(String name, String description) {
         super(name, description);
     }
@@ -17,7 +18,7 @@ public class Epic extends Task {
     public Epic(String name, Status status, int identifier, String description) {
         super(name, status, identifier, description);
     }
-    public void updateTime() {
+    private void updateTime() {
         if (subtasks.size() != 0) {
             long sumMinutes = 0;
             LocalDateTime first = subtasks.get(0).getStartTime();
@@ -33,7 +34,7 @@ public class Epic extends Task {
             duration = null;
             startTime = null;
         }
-        getEndTime();
+        updateEndTime();
     }
     public ArrayList<Subtask> getSubtasks() {
         return subtasks;
@@ -45,8 +46,10 @@ public class Epic extends Task {
     }
     public void deleteSubtasks() {
         subtasks.clear();
+        updateStatus();
+        updateTime();
     }
-    public void updateStatus() {
+    private void updateStatus() {
         int sumSubtaskNew = 0;
         int sumSubtaskDone = 0;
         for (Subtask subtask : subtasks) {
@@ -92,6 +95,13 @@ public class Epic extends Task {
     }
     @Override
     public LocalDateTime getEndTime(){
+        if(endTime == null){
+            updateEndTime();
+        }
+        return endTime;
+    }
+
+    private void updateEndTime(){
         if(startTime != null && subtasks.size()!=0){
             LocalDateTime end =subtasks.get(0).getEndTime();
             for (Subtask subtask:subtasks){
@@ -99,9 +109,9 @@ public class Epic extends Task {
                     end = subtask.getEndTime();
                 }
             }
-            return end;
+            endTime=end;
         }else {
-            return null;
+            endTime=null;
         }
     }
 

@@ -16,16 +16,8 @@ public class InMemoryTaskManager implements TaskManager {
     protected final HashMap<Integer, Task> tasks = new HashMap<>();
     protected final HashMap<Integer, Epic> epics = new HashMap<>();
     protected final HashMap<Integer, Subtask> subtasks = new HashMap<>();
-    protected Comparator<Task> comparator = (task1, task2) -> {
-        if (task1.getStartTime().isBefore(task2.getStartTime()) || task1.getStartTime() == null) {
-            return -1;
-        } else if (task1.getStartTime().isAfter(task2.getStartTime())) {
-            return 1;
-        } else {
-            return 0;
-        }
-    };
-    protected TreeSet<Task> sorterTask = new TreeSet(comparator);
+
+    protected TreeSet<Task> sorterTask = new TreeSet(Comparator.comparing(Task::getStartTime));
     protected int identifier = 0;
 
     private int getId() {
@@ -59,7 +51,6 @@ public class InMemoryTaskManager implements TaskManager {
             identifier = epic.getIdentifier();
         }
         epics.put(epic.getIdentifier(), epic);
-        epic.updateTime();
     }
 
     @Override
@@ -148,8 +139,7 @@ public class InMemoryTaskManager implements TaskManager {
             }
             subtasks.clear();
             for (Integer id : epicsId) {
-                epics.get(id).getSubtasks().clear();
-                epics.get(id).updateStatus();
+                epics.get(id).deleteSubtasks();
             }
         }
     }
@@ -176,7 +166,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void updateTask(Task task) {
-        if (tasks.containsKey(task.getIdentifier()) && isNoIntersections(task)) {
+        if (tasks.containsKey(task.getIdentifier())) {
             Task oldTask = tasks.get(task.getIdentifier());
             oldTask.setName(task.getName());
             oldTask.setDescription(task.getDescription());
@@ -199,20 +189,19 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void updateSubtask(Subtask subtask) {
-        if (subtasks.containsKey(subtask.getIdentifier()) && isNoIntersections(subtask)) {
+        if (subtasks.containsKey(subtask.getIdentifier())) {
             Subtask oldSubtask = subtasks.get(subtask.getIdentifier());
             String newName = subtask.getName();
             String newDescription = subtask.getDescription();
+            Status newStatus = subtask.getStatus();
+
+            epics.get(subtask.getIdentifierEpic()).deleteSubtask(oldSubtask);
             oldSubtask.setName(newName);
             oldSubtask.setDescription(newDescription);
             oldSubtask.setDuration(subtask.getDuration());
             oldSubtask.setStartTime(subtask.getStartTime());
-            epics.get(subtask.getIdentifierEpic()).updateTime();
-            if (!subtask.getStatus().equals(oldSubtask.getStatus())) {
-                Status newStatus = subtask.getStatus();
-                oldSubtask.setStatus(newStatus);
-                epics.get(subtask.getIdentifierEpic()).updateStatus();
-            }
+            oldSubtask.setStatus(newStatus);
+            epics.get(subtask.getIdentifierEpic()).addSubtasks(oldSubtask);
         }
     }
 
@@ -302,8 +291,8 @@ public class InMemoryTaskManager implements TaskManager {
         LocalDateTime startTask = task.getStartTime();
         LocalDateTime endTask = task.getEndTime();
         for (Task t : getPrioritizedTasks()) {
-            if ((t.getStartTime().isAfter(startTask) && t.getEndTime().isBefore(startTask))
-                    || (startTask.isAfter(t.getStartTime()) && endTask.isBefore(t.getStartTime()))
+            if ((t.getStartTime().isBefore(startTask) && t.getEndTime().isAfter(startTask))
+                    || (startTask.isBefore(t.getStartTime()) && endTask.isAfter(t.getStartTime()))
                     || (startTask.format(formatter).equals(t.getStartTime().format(formatter)))) {
                 isNoIntersection = false;
                 break;
