@@ -40,9 +40,11 @@ public class Epic extends Task {
         return subtasks;
     }
     public void addSubtasks(Subtask subtask) {
-        subtasks.add(subtask);
-        updateStatus();
-        updateTime();
+        if (!subtasks.contains(subtask)) {
+            subtasks.add(subtask);
+            updateStatus();
+            updateTime();
+        }
     }
     public void deleteSubtasks() {
         subtasks.clear();

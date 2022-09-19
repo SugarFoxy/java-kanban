@@ -30,7 +30,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void addNewTask(Task task) {
-        if (isNoIntersections(task)) {
+        if (!isIntersections(task) && !tasks.containsKey(task.getIdentifier()) ) {
             if (task.getIdentifier() == 0) {
                 task.setIdentifier(getId());
             }
@@ -55,7 +55,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void addNewSubtask(Subtask subtask) {
-        if (isNoIntersections(subtask)) {
+        if (!isIntersections(subtask)){
             int epicId = subtask.getIdentifierEpic();
             Epic epic = epics.get(epicId);
             if (epic == null) {
@@ -149,7 +149,7 @@ public class InMemoryTaskManager implements TaskManager {
      */
 
     @Override
-    public List<Subtask> getListSubtaskFromEpic(int epicId) {
+    public List<Subtask> getListSubtaskFromEpic( int epicId ) {
         if (epics.containsKey(epicId)) {
             ArrayList<Subtask> subtasks = new ArrayList<>();
             for (Subtask subtask : epics.get(epicId).getSubtasks()) {
@@ -166,7 +166,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void updateTask(Task task) {
-        if (tasks.containsKey(task.getIdentifier())) {
+        if (tasks.containsKey(task.getIdentifier()) && !isIntersections(task)) {
             Task oldTask = tasks.get(task.getIdentifier());
             oldTask.setName(task.getName());
             oldTask.setDescription(task.getDescription());
@@ -189,7 +189,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void updateSubtask(Subtask subtask) {
-        if (subtasks.containsKey(subtask.getIdentifier())) {
+        if (subtasks.containsKey(subtask.getIdentifier()) && !isIntersections(subtask)) {
             Subtask oldSubtask = subtasks.get(subtask.getIdentifier());
             String newName = subtask.getName();
             String newDescription = subtask.getDescription();
@@ -285,19 +285,21 @@ public class InMemoryTaskManager implements TaskManager {
         return new ArrayList<>(sorterTask);
     }
 
-    private boolean isNoIntersections(Task task) {
+    protected boolean isIntersections(Task task) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd.MM.yyyy");
-        boolean isNoIntersection = true;
+        boolean isIntersection = false;
         LocalDateTime startTask = task.getStartTime();
         LocalDateTime endTask = task.getEndTime();
         for (Task t : getPrioritizedTasks()) {
-            if ((t.getStartTime().isBefore(startTask) && t.getEndTime().isAfter(startTask))
-                    || (startTask.isBefore(t.getStartTime()) && endTask.isAfter(t.getStartTime()))
-                    || (startTask.format(formatter).equals(t.getStartTime().format(formatter)))) {
-                isNoIntersection = false;
-                break;
+            if(task.getIdentifier()!=t.getIdentifier()) {
+                if ((t.getStartTime().isBefore(startTask) && t.getEndTime().isAfter(startTask))
+                        || (startTask.isBefore(t.getStartTime()) && endTask.isAfter(t.getStartTime()))
+                        || (startTask.format(formatter).equals(t.getStartTime().format(formatter)))) {
+                    isIntersection = true;
+                    break;
+                }
             }
         }
-        return isNoIntersection;
+        return isIntersection;
     }
 }

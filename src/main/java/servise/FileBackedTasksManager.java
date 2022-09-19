@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,10 +19,13 @@ import java.util.List;
 
 
 public class FileBackedTasksManager extends InMemoryTaskManager implements TaskManager {
-    File file;
-
+    private File file;
+    private URI uri;
     public FileBackedTasksManager(File file) {
         this.file = file;
+    }
+    protected FileBackedTasksManager() {
+
     }
 
     public static void main(String[] args) {
@@ -137,12 +141,14 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
             if (task instanceof Epic) {
                 identifier = task.getIdentifier();
                 epics.put(identifier, (Epic) task);
-            } else if (task instanceof Subtask) {
+            } else if (task instanceof Subtask && !isIntersections(task)) {
                 identifier = task.getIdentifier();
                 subtasks.put(identifier, (Subtask) task);
-            } else {
+                sorterTask.add(task);
+            } else if(!isIntersections(task)){
                 identifier = task.getIdentifier();
                 tasks.put(identifier, task);
+                sorterTask.add(task);
             }
         }
     }
@@ -161,7 +167,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         }
     }
 
-    private void save() {
+    protected void save(){
         try (Writer writer = new FileWriter(file.getAbsoluteFile(), StandardCharsets.UTF_8)) {
             writer.write("id,type,name,status,description,epic,duration,startTime\n");
             for (Task task : getAllTasks()) {
@@ -173,7 +179,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
                 writer.write(historyToString(history));
             }
         } catch (IOException e) {
-            throw new ManagerSaveException();
+            throw new ManagerSaveException(e.getMessage());
         }
     }
 
