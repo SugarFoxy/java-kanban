@@ -1,5 +1,7 @@
 package HttpServer;
 
+import servise.ManagerSaveException;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -17,17 +19,21 @@ public class KVTaskClient {
         apiToken = register();
     }
 
-    private String register() throws IOException, InterruptedException {
+    private String register()  {
         URI uri1 = URI.create(uri + "/register/");
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
                 .uri(uri1)
                 .version(HttpClient.Version.HTTP_1_1)
                 .build();
-        return client.send(request, HttpResponse.BodyHandlers.ofString()).body();
+        try {
+            return client.send(request, HttpResponse.BodyHandlers.ofString()).body();
+        } catch (IOException | InterruptedException e) {
+            throw new ManagerSaveException(e);
+        }
     }
 
-    public void put(String key, String json) throws IOException, InterruptedException {
+    public void put(String key, String json){
         URI uri1 = URI.create(uri + "/save/" + key + "?API_TOKEN=" + apiToken);
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(json))
@@ -35,10 +41,14 @@ public class KVTaskClient {
                 .version(HttpClient.Version.HTTP_1_1)
                 .build();
         HttpResponse.BodyHandler<String> handler = HttpResponse.BodyHandlers.ofString();
-        client.send(request, handler);
+        try {
+            client.send(request, handler);
+        } catch (IOException | InterruptedException e) {
+            throw new ManagerSaveException(e);
+        }
     }
 
-    public String load(String key) throws IOException, InterruptedException {
+    public String load(String key)  {
         URI uri1 = URI.create(uri + "/load/" + key+ "?API_TOKEN=" + apiToken);
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
@@ -46,6 +56,10 @@ public class KVTaskClient {
                 .version(HttpClient.Version.HTTP_1_1)
                 .build();
         HttpResponse.BodyHandler<String> handler = HttpResponse.BodyHandlers.ofString();
-        return client.send(request, handler).body();
+        try {
+            return client.send(request, handler).body();
+        } catch (IOException | InterruptedException e) {
+            throw new ManagerSaveException(e);
+        }
     }
 }

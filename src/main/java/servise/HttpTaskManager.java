@@ -30,20 +30,14 @@ public class HttpTaskManager extends FileBackedTasksManager {
     }
 
     private void loadData() {
-        try {
             getTaskFromJson();
             getEpicFromJson();
             getSubtaskFromJson();
             getHistoryFromJson();
-        } catch (IOException | InterruptedException e) {
-            throw new ManagerSaveException(e.getMessage());
-        }
-
     }
 
     @Override
     public void save() {
-        try {
             if (!getTasksJson().isEmpty())
                 taskClient.put("Tasks", getTasksJson());
             if (!getEpicsJson().isEmpty())
@@ -52,12 +46,9 @@ public class HttpTaskManager extends FileBackedTasksManager {
                 taskClient.put("Subtasks", getSubtasksJson());
             if (!getHistoryJson().isEmpty())
                 taskClient.put("History", getHistoryJson());
-        } catch (IOException | InterruptedException e) {
-            throw new ManagerSaveException(e.getMessage());
-        }
     }
 
-    private void getHistoryFromJson() throws IOException, InterruptedException {
+    private void getHistoryFromJson()  {
         String historyTasks = taskClient.load("History");
         if (!historyTasks.isEmpty()) {
             for (String task : historyTasks.split("\n")) {
@@ -74,7 +65,7 @@ public class HttpTaskManager extends FileBackedTasksManager {
         }
     }
 
-    private void getTaskFromJson() throws IOException, InterruptedException {
+    private void getTaskFromJson(){
         gson = new GsonBuilder()
                 .registerTypeAdapter(Task.class, new TaskAdapter())
                 .create();
@@ -88,7 +79,7 @@ public class HttpTaskManager extends FileBackedTasksManager {
         }
     }
 
-    private void getEpicFromJson() throws IOException, InterruptedException {
+    private void getEpicFromJson(){
         gson = new GsonBuilder()
                 .registerTypeAdapter(Epic.class, new TaskAdapter())
                 .create();
@@ -101,7 +92,7 @@ public class HttpTaskManager extends FileBackedTasksManager {
         }
     }
 
-    private void getSubtaskFromJson() throws IOException, InterruptedException {
+    private void getSubtaskFromJson(){
         gson = new GsonBuilder()
                 .registerTypeAdapter(Subtask.class, new TaskAdapter())
                 .create();
